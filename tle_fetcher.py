@@ -3,6 +3,7 @@
 from tle_database import TleDatabase
 from tle_reader import TleReader
 import logging
+import os
 
 CELESTRAK_ROOT = 'https://www.celestrak.com/NORAD/elements/'
 
@@ -61,7 +62,8 @@ formatter = logging.Formatter(
     datefmt=time_string,
     style='{')
 
-f_handler = logging.FileHandler('/home/bryon/dev/tle_fetcher/tle_fetcher.log', mode='a')
+log_path = os.path.join(os.path.expanduser('~'), 'log/tle_fetcher.log')
+f_handler = logging.FileHandler(log_path, mode='a')
 f_handler.setLevel(logging.INFO)
 f_handler.setFormatter(formatter)
 log.addHandler(f_handler)
@@ -81,9 +83,11 @@ def main(tle_rd: TleReader, tle_db: TleDatabase) -> None:
     tle_db.connect_db()
     tle_db.delete_rows()
     tle_db.update_tles(tles)
+
     for group in groups:
         gp = tle_rd.get_group(group)
         tle_db.update_sat_group(gp)
+
     tle_db.close_db()
 
     log.info("TLE fetcher completed")

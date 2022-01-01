@@ -6,47 +6,49 @@ logger = logging.getLogger('tle_fetcher.' + __name__)
 
 class TleReader():
     def __init__(self, url_root: str):
-        self.url_root = url_root   
+        self.url_root = url_root
 
-    def get_tles(self) -> dict:
+    def get_tles(self) -> list:
         url = self.url_root + 'active.txt'
-        tles = {}
+        tles = []
 
         try:
             with urllib.request.urlopen(url) as txt:
-                i = 0  
-                key = ""
-                value = ""
+                i = 0
+                sat = ''
+                tle = ''
                 for line in txt:
                     line = line.strip().decode('utf-8')
                     if i % 3 == 0:
-                        key = line
+                        sat = line
                     elif i % 3 == 1:
-                        value = line
+                        tle = line
                     else:
-                        value += "\n" + line
-                        tles[key] = value
+                        tle += "\n" + line
+                        tles.append((sat, line.split()[1], tle))
                     i += 1
+
         except Exception as ex:
-            logger.error("Error getting TLEs: %s", ex.msg)
+            logger.error("Error getting TLEs: %s", ex)
             sys.exit(1)
-        
+
         return tles
 
     def get_group(self, group_name: str) -> list:
         url = self.url_root + group_name + '.txt'
         group = []
-        
-        try:    
+
+        try:
             with urllib.request.urlopen(url) as txt:
-                i = 0  
+                i = 0
                 for line in txt:
                     line = line.strip().decode('utf-8')
-                    if i % 3 == 0:
-                        group.append((line, group_name))
+                    if i % 3 == 2:
+                        group.append((line.split()[1], group_name))
                     i += 1
+
         except Exception as ex:
-            logger.error("Error getting groups: %s", ex.msg)
+            logger.error("Error getting groups: %s", ex)
             sys.exit(1)
-        
+
         return group

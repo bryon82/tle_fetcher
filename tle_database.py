@@ -4,7 +4,7 @@ import sys
 
 logger = logging.getLogger('tle_fetcher.' + __name__)
 
-class TleDatabase: 
+class TleDatabase:
 
     def __init__(self):
         self.conn = None
@@ -14,7 +14,7 @@ class TleDatabase:
         # Connect to MariaDB
         try:
             conn = mariadb.connect(
-                user='tle_getter',
+                user='tle_fetcher',
                 host='localhost',
                 port=3306,
                 database='celestrak_tles'
@@ -30,29 +30,28 @@ class TleDatabase:
 
         try:
             cur.execute('delete from sat_groups')
-            cur.execute('delete from tles')     
-        except mariadb.Error as e: 
+            cur.execute('delete from tles')
+        except mariadb.Error as e:
             logger.error("Error clearing tables: %s", e.msg)
         self.conn.commit()
 
-    def update_tles(self, tles: dict):
+    def update_tles(self, tles: list):
         cur = self.conn.cursor()
 
-        try: 
-            cur.executemany('INSERT INTO tles (sat, tle) values (?,?)', list(tles.items()))
-        except mariadb.Error as e: 
+        try:
+            cur.executemany('insert into tles (sat, sat_cat_num, tle) values (?,?,?)', tles)
+        except mariadb.Error as e:
             logger.error("Error updating TLEs: %s", e.msg)
-        self.conn.commit() 
+        self.conn.commit()
 
     def update_sat_group(self, group: list):
         cur = self.conn.cursor()
 
-        try:    
-            cur.executemany('INSERT INTO sat_groups (sat, group_name) values (?,?)', group)
-        except mariadb.Error as e: 
+        try:
+            cur.executemany('insert ignore into sat_groups (sat_cat_num, group_name) values (?,?)', group)
+        except mariadb.Error as e:
             logger.error("Error updating groups: %s", e.msg)
         self.conn.commit()
 
     def close_db(self):
         self.conn.close()
-        
