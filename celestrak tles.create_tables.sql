@@ -23,7 +23,8 @@ groups (
     group_name varchar(20) primary key
 );
 
-insert into groups (group_name) values ('weather'), ('noaa'), ('goes'), ('resource'), ('sarsat'), ('dmc'), ('tdrss'), ('argos'), ('planet'), ('spire'), ('geo'), ('intelsat'), ('ses'), ('iridium'), ('iridium-NEXT'), ('starlink'), ('oneweb'), ('orbcomm'), ('globalstar'), ('swarm'), ('amateur'), ('x-comm'), ('other-comm'), ('satnogs'), ('gorizont'), ('raduga'), ('molniya'), ('gnss'), ('gps-ops'), ('glo-ops'), ('galileo'), ('beidou'), ('sbas'), ('nnss'), ('musson'), ('science'), ('geodetic'), ('education'), ('engineering'), ('military'), ('radar'), ('cubesat'), ('other');
+insert into groups (group_name) values ('stations'), ('weather'), ('noaa'), ('goes'), ('resource'), ('sarsat'), ('dmc'), ('tdrss'), ('argos'), ('planet'), ('spire'), ('geo'), ('intelsat'), ('ses'), ('iridium'), ('iridium-NEXT'), ('starlink'), ('oneweb'), ('orbcomm'), ('globalstar'), ('swarm'), ('amateur'), ('x-comm'), ('other-comm'), ('satnogs'), ('gorizont'), ('raduga'), ('molniya'), ('gnss'), ('gps-ops'), ('glo-ops'), ('galileo'), ('beidou'), ('sbas'), ('nnss'), ('musson'), ('science'), ('geodetic'), ('education'), ('engineering'), ('military'), ('radar'), ('cubesat'), ('other');
+insert into groups set group_name = 'stations';
 
 select * from groups;
 select * from sat_groups;

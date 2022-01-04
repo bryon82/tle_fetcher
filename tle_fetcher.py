@@ -8,6 +8,7 @@ import os
 CELESTRAK_ROOT = 'https://www.celestrak.com/NORAD/elements/'
 
 groups = [
+    'stations',
     'weather',
     'noaa',
     'goes',
