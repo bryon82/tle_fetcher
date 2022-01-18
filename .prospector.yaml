@@ -1,0 +1,6 @@
+strictness: high
+
+pylint:
+  enable:
+    - trailing-whitespace
+    - missing-finale-newline

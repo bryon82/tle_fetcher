@@ -66,8 +66,8 @@ def main(tle_rd: TleReader, tle_db: TleDatabase) -> None:
     tle_db.update_tles(tles)
 
     for group in groups:
-        gp = tle_rd.get_group(group)
-        tle_db.update_sat_group(gp)
+        grp = tle_rd.get_group(group)
+        tle_db.update_sat_group(grp)
 
     tle_db.close_db()
 
