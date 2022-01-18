@@ -19,7 +19,7 @@ jobs:
     - name: Install MariaDB Connector/C
       run: |
         sudo apt-get update
-        sudo apt-get install mariadb-server libmariadb3
+        sudo apt-get install libmariadb3 libmariadb-dev mariadb-server
     - name: Set up Python 3.10
       uses: actions/setup-python@v2
       with:
