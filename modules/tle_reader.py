@@ -2,23 +2,24 @@ import urllib.request
 import sys
 import logging
 
-logger = logging.getLogger('tle_fetcher.' + __name__)
+logger = logging.getLogger("tle_fetcher." + __name__)
 
-class TleReader():
+
+class TleReader:
     def __init__(self, url_root: str):
         self.url_root = url_root
 
     def get_tles(self) -> list:
-        url = self.url_root + 'active.txt'
+        url = self.url_root + "active.txt"
         tles = []
 
         try:
             with urllib.request.urlopen(url) as txt:
                 i = 0
-                sat = ''
-                tle = ''
+                sat = ""
+                tle = ""
                 for line in txt:
-                    line = line.strip().decode('utf-8')
+                    line = line.strip().decode("utf-8")
                     if i % 3 == 0:
                         sat = line
                     elif i % 3 == 1:
@@ -35,14 +36,14 @@ class TleReader():
         return tles
 
     def get_group(self, group_name: str) -> list:
-        url = self.url_root + group_name + '.txt'
+        url = self.url_root + group_name + ".txt"
         group = []
 
         try:
             with urllib.request.urlopen(url) as txt:
                 i = 0
                 for line in txt:
-                    line = line.strip().decode('utf-8')
+                    line = line.strip().decode("utf-8")
                     if i % 3 == 2:
                         group.append((line.split()[1], group_name))
                     i += 1

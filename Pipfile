@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+mariadb = "*"
+
+[dev-packages]
+pytest = "*"
+black = "*"
+prospector = {extras = ["with_bandit"], version = "*"}
+
+[requires]
+python_version = "3.10"
+
+[scripts]
+fetch = "python tle_fetcher.py"
+test = "pytest"

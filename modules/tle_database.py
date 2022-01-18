@@ -2,10 +2,10 @@ import mariadb
 import logging
 import sys
 
-logger = logging.getLogger('tle_fetcher.' + __name__)
+logger = logging.getLogger("tle_fetcher." + __name__)
+
 
 class TleDatabase:
-
     def __init__(self):
         self.conn = None
 
@@ -14,10 +14,10 @@ class TleDatabase:
         # Connect to MariaDB
         try:
             conn = mariadb.connect(
-                user='tle_fetcher',
-                host='localhost',
+                user="tle_fetcher",
+                host="localhost",
                 port=3306,
-                database='celestrak_tles'
+                database="celestrak_tles",
             )
         except mariadb.Error as e:
             logger.error("Error connecting to MariaDB Platform: %s", e.msg)
@@ -29,8 +29,8 @@ class TleDatabase:
         cur = self.conn.cursor()
 
         try:
-            cur.execute('delete from sat_groups')
-            cur.execute('delete from tles')
+            cur.execute("delete from sat_groups")
+            cur.execute("delete from tles")
         except mariadb.Error as e:
             logger.error("Error clearing tables: %s", e.msg)
         self.conn.commit()
@@ -39,7 +39,9 @@ class TleDatabase:
         cur = self.conn.cursor()
 
         try:
-            cur.executemany('insert into tles (sat, sat_cat_num, tle) values (?,?,?)', tles)
+            cur.executemany(
+                "insert into tles (sat, sat_cat_num, tle) values (?,?,?)", tles
+            )
         except mariadb.Error as e:
             logger.error("Error updating TLEs: %s", e.msg)
         self.conn.commit()
@@ -48,7 +50,10 @@ class TleDatabase:
         cur = self.conn.cursor()
 
         try:
-            cur.executemany('insert ignore into sat_groups (sat_cat_num, group_name) values (?,?)', group)
+            cur.executemany(
+                "insert ignore into sat_groups (sat_cat_num, group_name) values (?,?)",
+                group,
+            )
         except mariadb.Error as e:
             logger.error("Error updating groups: %s", e.msg)
         self.conn.commit()
